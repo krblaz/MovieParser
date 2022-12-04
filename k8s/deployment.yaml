@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-parser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-parser
+  template:
+    metadata:
+      labels:
+        app: movie-parser
+    spec:
+      containers:
+        - name: movie-parser
+          image: krblaz/movie_parser
+          env:
+            - name: spring_data_mongodb_uri
+              value: mongodb+srv://MovieDBUser:n0inOTd9SJ5WxqRi@moviestest.1ouanda.mongodb.net
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-parser
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: server
+  selector:
+    app: movie-parser

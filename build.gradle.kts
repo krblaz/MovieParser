@@ -34,3 +34,8 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+springBoot {
+    mainClass.set("com.example.movieparserspring.MovieParserSpringApplicationKt")
+}
+
