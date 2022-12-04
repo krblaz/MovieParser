@@ -17,7 +17,7 @@ class Parser() {
         val pageFile = File(path)
         val moviePage = Jsoup.parse(pageFile)
 
-        val movie = Movie(Path(path).fileName.toString())
+        val movie = Movie(Path(path).fileName.toString().split(".")[0])
         parse(movie, moviePage)
         return movie
     }
