@@ -17,13 +17,14 @@ class MovieController(private val movieRepository: MovieRepository) {
 
     @GetMapping
     fun getMovies(): MutableList<Movie> {
-        logger.info("Get all movies called")
-        return movieRepository.findAll()
+        val res = movieRepository.findAll()
+        logger.info("Get all movies called, returning ${res.size} movies")
+        return res
     }
 
     @GetMapping("{id}")
     fun getMovie(@PathVariable id: String): Optional<Movie> {
-        logger.info("Get movie by id called")
+        logger.info("Get movie by id $id called")
         return movieRepository.findById(id)
     }
 }

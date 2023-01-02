@@ -2,6 +2,7 @@ package com.example.movieparserspring.data
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDateTime
 
 @Document("movies")
 class Movie(
@@ -12,8 +13,10 @@ class Movie(
     var rt_score: RottenTomatoesScore? = null
     var rt_metadata: RottenTomatoesMetadata? = null
 
+    var date_added = LocalDateTime.now()
+
     override fun toString(): String {
-        return "MovieRT(url='$url', title='$title')"
+        return "MovieRT(url='$url', title='$title', added='$date_added')"
     }
 }
 
