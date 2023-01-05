@@ -8,17 +8,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.availability.AvailabilityChangeEvent
 import org.springframework.boot.availability.LivenessState
 import org.springframework.context.ApplicationContext
-import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import java.nio.file.Files
 import kotlin.io.path.Path
 import kotlin.io.path.exists
 
 @RestController
 @RequestMapping("util")
-class UtilController(val movieRepository: MovieRepository, val properties: MovieAppProperties, val parser: Parser, val ctx: ApplicationContext) {
+class DBUtilController(val movieRepository: MovieRepository, val properties: MovieAppProperties, val parser: Parser) {
 
-    private final val logger = LoggerFactory.getLogger(UtilController::class.java)
+    private val logger = LoggerFactory.getLogger(DBUtilController::class.java)
 
     @DeleteMapping("delete_all")
     fun deleteAllMovies(): String {
@@ -31,20 +32,20 @@ class UtilController(val movieRepository: MovieRepository, val properties: Movie
     }
 
     @PostMapping("init_db")
-    fun initDB(): ResponseEntity<String> {
+    fun initDB(): String {
         logger.info("InitDB request called")
 
         if (properties.initDBPath == null) {
             val message = "No DB path set"
             logger.error(message)
-            return ResponseEntity.internalServerError().body(message)
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message)
         }
 
         val basePath = Path(properties.initDBPath!!)
         if (!basePath.exists()) {
             val message = "Path $basePath doesn't exists"
             logger.error(message)
-            return ResponseEntity.internalServerError().body(message)
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message)
         }
 
         val parsedMovies = mutableListOf<Movie>()
@@ -54,21 +55,6 @@ class UtilController(val movieRepository: MovieRepository, val properties: Movie
             movieRepository.save(movie)
             logger.info("Saved movie ${movie.title}")
         }
-        return ResponseEntity.ok().body("Successfully loaded ${parsedMovies.size} movies to DB")
-    }
-
-    @GetMapping("simulate_error")
-    fun configTest(): Boolean {
-        return properties.simulateError
-    }
-
-    @PostMapping("simulate_error")
-    fun setConfigTest(): Boolean {
-        logger.info("Starting error simulation")
-        properties.simulateError = true
-
-        AvailabilityChangeEvent.publish(ctx, LivenessState.BROKEN)
-
-        return properties.simulateError
+        return "Successfully loaded ${parsedMovies.size} movies to DB"
     }
 }

@@ -18,7 +18,7 @@ import java.util.*
 @RequestMapping("movie")
 class MovieController(private val movieRepository: MovieRepository, private val tmdbService: TMDBService) {
 
-    private final val logger = LoggerFactory.getLogger(MovieController::class.java)
+    private val logger = LoggerFactory.getLogger(MovieController::class.java)
 
     @GetMapping
     fun getMovies(): MutableList<Movie> {

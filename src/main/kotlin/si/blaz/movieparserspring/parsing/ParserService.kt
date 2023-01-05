@@ -14,7 +14,7 @@ class ParserService(
     private val metricRepo: MetricRepo
 ) {
 
-    private final val logger = LoggerFactory.getLogger(ParserService::class.java)
+    private val logger = LoggerFactory.getLogger(ParserService::class.java)
     fun parseURLList(moviesUrls: List<String>): MutableList<Movie> {
         logger.info("Parse movie urls request called with ${moviesUrls.size} urls")
         val parsedMovies = mutableListOf<Movie>()

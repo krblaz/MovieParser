@@ -17,8 +17,7 @@ import si.blaz.movieparserspring.controllers.TMDBService
 class MovieParserSpringApplication(val parser: Parser, val tmdbService: TMDBService) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
-        val m = parser.parseFromWeb("https://www.rottentomatoes.com/m/the_kissing_booth")
-        tmdbService.searchMovie(m)
+
     }
 }
 

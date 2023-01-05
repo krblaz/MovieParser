@@ -1,0 +1,23 @@
+type Query {
+    movieById(id: ID): Movie
+    allMovies: [Movie]
+}
+
+type Movie {
+    url: ID
+    title: String
+    rt_metadata: RottenTomatoesMetadata
+}
+
+type RottenTomatoesMetadata{
+    rating: String,
+    original_language: String,
+    genre: [String],
+    director: [String],
+    producer: [String],
+    writer: [String],
+    distributor: [String],
+    releaseDateTheater: String,
+    releaseDateTheaterType: String,
+    releaseDateStreaming: String,
+}

@@ -20,8 +20,8 @@ import kotlin.io.path.Path
 @Component
 class Parser(val properties: MovieAppProperties) {
 
-    private final val logger = LoggerFactory.getLogger(Parser::class.java)
-    private final val DATE_FORMAT = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+    private val logger = LoggerFactory.getLogger(Parser::class.java)
+    private val DATE_FORMAT = DateTimeFormatter.ofPattern("MMM dd, yyyy")
 
     fun parseOpening(): MutableList<Movie> {
         val url = "${properties.baseURL}${properties.openingURL}"

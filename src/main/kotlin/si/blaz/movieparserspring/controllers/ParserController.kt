@@ -14,7 +14,7 @@ import si.blaz.movieparserspring.parsing.ParserService
 @RequestMapping("parse")
 class ParserController(private val parserService: ParserService, private val movieRepository: MovieRepository, private val metricRepo: MetricRepo) {
 
-    private final val logger = LoggerFactory.getLogger(ParserController::class.java)
+    private val logger = LoggerFactory.getLogger(ParserController::class.java)
 
     @PostMapping
     fun parseMovie(@RequestBody body: String): MutableList<Movie> {

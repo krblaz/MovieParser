@@ -15,4 +15,5 @@ class MovieAppProperties {
     var initDBPath: String? = null
 
     var simulateError = false
+    var circuitBreakerBroken = false
 }
