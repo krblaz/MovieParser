@@ -1,4 +1,4 @@
-package com.example.movieparserspring
+package si.blaz.movieparserspring
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

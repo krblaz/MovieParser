@@ -1,8 +1,10 @@
-package com.example.movieparserspring.data
+package si.blaz.movieparserspring.data
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 
 @Document("movies")
 class Movie(
@@ -40,8 +42,20 @@ class RottenTomatoesMetadata(
     var director: List<String> = mutableListOf(),
     var producer: List<String> = mutableListOf(),
     var writer: List<String> = mutableListOf(),
-    var distributor: List<String> = mutableListOf()
-) {
+    var distributor: List<String> = mutableListOf(),
+    var releaseDateTheater: LocalDate? = null,
+    var releaseDateTheaterType: String? = null,
+    var releaseDateStreaming: LocalDate? = null,
+
+    ) {
+
+    val releaseDate: LocalDate?
+        get() {
+            val first = releaseDateTheater ?: LocalDate.MAX
+            val second = releaseDateStreaming ?: LocalDate.MAX
+            return if (releaseDateStreaming == null && releaseDateTheater == null) null else if(first.isBefore(second)) releaseDateTheater else releaseDateStreaming
+        }
+
     override fun toString(): String {
         return "RottenTomatoesMetadata(rating=$rating, genre=$genre, original_language=$original_language, director=$director, producer=$producer, writer=$writer, distributor=$distributor)"
     }

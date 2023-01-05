@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="biz.paluch.logging.gelf.log4j2">
+    <Properties>
+        <property name="application_name">${bundle:application:spring.application.name}</property>
+        <property name="application_version">${bundle:application:spring.application.version}</property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%clr{%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}}{faint} %clr{%5p} %clr{%pid}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx" />
+        </Console>
+
+        <Gelf name="gelf" host="tcp:localhost" port="12201" version="1.1" extractStackTrace="true"
+              filterStackTrace="true" maximumMessageSize="8192" mdcProfiling="true" includeFullMdc="true"
+              originHost="%host{fqdn}">
+            <Field name="timestamp" pattern="%d{dd MMM yyyy HH:mm:ss,SSS}" />
+            <Field name="level" pattern="%level" />
+            <Field name="simpleClassName" pattern="%C{1}" />
+            <Field name="className" pattern="%C" />
+            <Field name="server" pattern="%host" />
+            <Field name="server.fqdn" pattern="%host{fqdn}" />
+            <Field name="service.name" pattern="${application_name}"/>
+            <Field name="service.version" pattern="${application_version}"/>
+        </Gelf>
+    </Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="gelf"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

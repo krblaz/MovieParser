@@ -1,4 +1,4 @@
-package com.example.movieparserspring.data
+package si.blaz.movieparserspring.data
 
 import org.springframework.data.mongodb.repository.MongoRepository
 

@@ -1,9 +1,9 @@
-package com.example.movieparserspring.controllers
+package si.blaz.movieparserspring.controllers
 
-import com.example.movieparserspring.confg.MovieAppProperties
-import com.example.movieparserspring.data.Movie
-import com.example.movieparserspring.data.MovieRepository
-import com.example.movieparserspring.parsing.Parser
+import si.blaz.movieparserspring.confg.MovieAppProperties
+import si.blaz.movieparserspring.data.Movie
+import si.blaz.movieparserspring.data.MovieRepository
+import si.blaz.movieparserspring.parsing.Parser
 import org.slf4j.LoggerFactory
 import org.springframework.boot.availability.AvailabilityChangeEvent
 import org.springframework.boot.availability.LivenessState
@@ -18,7 +18,7 @@ import kotlin.io.path.exists
 @RequestMapping("util")
 class UtilController(val movieRepository: MovieRepository, val properties: MovieAppProperties, val parser: Parser, val ctx: ApplicationContext) {
 
-    val logger = LoggerFactory.getLogger(UtilController::class.java)
+    private final val logger = LoggerFactory.getLogger(UtilController::class.java)
 
     @DeleteMapping("delete_all")
     fun deleteAllMovies(): String {
@@ -55,12 +55,6 @@ class UtilController(val movieRepository: MovieRepository, val properties: Movie
             logger.info("Saved movie ${movie.title}")
         }
         return ResponseEntity.ok().body("Successfully loaded ${parsedMovies.size} movies to DB")
-    }
-
-    @GetMapping("async-test")
-    fun asyncTest(): String {
-        Thread.sleep(5000)
-        return "Done"
     }
 
     @GetMapping("simulate_error")
