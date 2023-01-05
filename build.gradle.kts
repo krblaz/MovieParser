@@ -27,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     //Micrometer
     implementation("io.micrometer:micrometer-registry-prometheus")
@@ -60,7 +61,7 @@ configurations.implementation {
     exclude("org.springframework.boot", "spring-boot-starter-logging")
 }
 
-springBoot {
-    mainClass.set("com.example.movieparserspring.MovieParserSpringApplicationKt")
-}
+/*springBoot {
+    mainClass.set("si.blaz.movieparserspring.MovieParserSpringApplicationKt")
+}*/
 

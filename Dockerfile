@@ -6,5 +6,5 @@ RUN gradle bootJar
 
 FROM amazoncorretto:17
 WORKDIR /app
-COPY --from=builder /app/build/libs/*.jar /app
-CMD ["java","-jar", "app-0.0.1-SNAPSHOT.jar"]
+COPY --from=builder /app/build/libs/*.jar /app/movie_parser.jar
+CMD ["java","-jar", "movie_parser.jar"]

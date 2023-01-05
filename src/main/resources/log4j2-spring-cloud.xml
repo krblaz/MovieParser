@@ -3,16 +3,18 @@
     <Properties>
         <property name="application_name">${bundle:application:spring.application.name}</property>
         <property name="application_version">${bundle:application:spring.application.version}</property>
+        <property name="gelf_host">${bundle:application:gelf.host}</property>
+        <property name="gelf_port">${bundle:application:gelf.port}</property>
     </Properties>
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                    pattern="%clr{%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}}{faint} %clr{%5p} %clr{%pid}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx" />
+                    pattern="%clr{%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}}{faint} %clr{${application_name}:${application_version}}{blue} %clr{%5p} %clr{%pid}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx"/>
         </Console>
 
-        <Gelf name="gelf" host="tcp:localhost" port="12201" version="1.1" extractStackTrace="true"
-              filterStackTrace="true" maximumMessageSize="8192" mdcProfiling="true" includeFullMdc="true"
+<!--        <Gelf name="gelf" host="7659d11d-ea67-460c-8101-201d9235c2ac-ls.logit.io" port="13949" version="1.1" extractStackTrace="true"
+              filterStackTrace="true" maximumMessageSize="16384" mdcProfiling="true" includeFullMdc="true"
               originHost="%host{fqdn}">
             <Field name="timestamp" pattern="%d{dd MMM yyyy HH:mm:ss,SSS}" />
             <Field name="level" pattern="%level" />
@@ -22,15 +24,31 @@
             <Field name="server.fqdn" pattern="%host{fqdn}" />
             <Field name="service.name" pattern="${application_name}"/>
             <Field name="service.version" pattern="${application_version}"/>
+        </Gelf>-->
+
+        <Gelf name="gelf" host="7659d11d-ea67-460c-8101-201d9235c2ac-ls.logit.io" port="13949" version="1.1" mdcProfiling="true" includeFullMdc="true">
+            <Field name="timestamp" pattern="%d{dd MMM yyyy HH:mm:ss,SSS}" />
+            <Field name="level" pattern="%level" />
+            <Field name="level" pattern="%level" />
+            <Field name="simpleClassName" pattern="%C{1}" />
+            <Field name="service.name" pattern="${application_name}"/>
+            <Field name="service.version" pattern="${application_version}"/>
         </Gelf>
+
+        <!--<Socket name="socket" host="7659d11d-ea67-460c-8101-201d9235c2ac-ls.logit.io" port="13948" protocol="UDP">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} ${application_name}:${application_version} %5p} %pid -&#45;&#45; [%15.15t] %-40.40c{1.} : %m%n%xwEx"/>
+        </Socket>-->
     </Appenders>
 
     <Loggers>
         <!-- LOG everything at INFO level -->
         <Root level="info">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="gelf"/>
+            <AppenderRef ref="gelf" />
         </Root>
+
+        <Logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="debug"/>
     </Loggers>
 
 </Configuration>

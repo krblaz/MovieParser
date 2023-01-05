@@ -17,8 +17,7 @@ class ParserController(private val parserService: ParserService, private val mov
     private val logger = LoggerFactory.getLogger(ParserController::class.java)
 
     @PostMapping
-    fun parseMovie(@RequestBody body: String): MutableList<Movie> {
-        val moviesUrls = body.split(System.lineSeparator())
+    fun parseMovie(@RequestBody moviesUrls: List<String>): MutableList<Movie> {
         return parserService.parseURLList(moviesUrls)
     }
 

@@ -16,12 +16,28 @@ spec:
         - name: movie-parser
           image: krblaz/movie_parser
           env:
-            - name: spring_data_mongodb_uri
-              value: mongodb+srv://MovieDBUser:n0inOTd9SJ5WxqRi@moviestest.1ouanda.mongodb.net
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas
+                  key: url
+            - name: MOVIES-APP_TMDBAPIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: tmdb-api
+                  key: key
+            - name: SPRING_PROFILES_ACTIVE
+              value: cloud
           ports:
             - containerPort: 8080
               name: server
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 3
 
 ---
 apiVersion: v1
@@ -31,7 +47,26 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 8080
+    - port: 1234
       targetPort: server
   selector:
     app: movie-parser
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: movie-parser-ingres
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: movie-parser
+                port:
+                  number: 1234
