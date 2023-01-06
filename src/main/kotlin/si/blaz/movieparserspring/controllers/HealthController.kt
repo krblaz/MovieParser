@@ -30,11 +30,12 @@ class HealthController(val properties: MovieAppProperties, val ctx: ApplicationC
         return properties.simulateError
     }
 
-    @PostMapping("circuit_breaker_broken")
-    fun setCircuitBreakerDelay(@RequestBody value: String): Boolean {
+    @PostMapping("break_request")
+    fun setCircuitBreakerDelay(): String {
         properties.circuitBreakerBroken = !properties.circuitBreakerBroken
         logger.info("Setting circuit broken to ${properties.circuitBreakerBroken} s")
-        return  properties.circuitBreakerBroken
+        val status = if(properties.circuitBreakerBroken) "" else " not"
+        return  "Request is$status broken"
     }
     @GetMapping("circuit_breaker_broken")
     fun getCircuitBreakerDelay(): Boolean {
