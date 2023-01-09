@@ -1,0 +1,10 @@
+
+<div class="flex max-w-xl flex-col m-8 gap-6">
+  <div *ngFor="let movie of movies" class="p-6 rounded-md bg-neutral-300 flex justify-between">
+    <div class="text-black text-lg font-bold">{{movie.title}} ({{movie.rt_metadata.releaseDate[0]}})</div>
+    <div class="flex gap-2">
+      <div class="text-lg">AS: {{movie.rt_score.audience_score}}%</div>
+      <div class="text-lg">TM: {{movie.rt_score.tomatometer_score}}%</div>
+    </div>
+  </div>
+</div>

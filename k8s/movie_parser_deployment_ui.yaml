@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-parser-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-parser-ui
+  template:
+    metadata:
+      labels:
+        app: movie-parser-ui
+    spec:
+      containers:
+        - name: movie-parser-ui
+          image: krblaz/movie_parser-ui
+          ports:
+            - containerPort: 80
+              name: server
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-parser-ui
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 1236
+      targetPort: server
+  selector:
+    app: movie-parser-ui
